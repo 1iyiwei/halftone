@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{20023049-4DDC-413D-A1E8-C253EBDEDC77}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\Debug/ErrorDiffusion.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>.\Debug\ErrorDiffusion.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderOutputFile>.\Release/ErrorDiffusion.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <Lib>
+      <OutputFile>.\Release\ErrorDiffusion.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ArrayConstrainer.cpp" />
+    <ClCompile Include="Constrainer.cpp" />
+    <ClCompile Include="ConstrainedThresholder.cpp" />
+    <ClCompile Include="CoordinatePixel.cpp" />
+    <ClCompile Include="CounterScanner.cpp" />
+    <ClCompile Include="Diffuser.cpp" />
+    <ClCompile Include="Distributor.cpp" />
+    <ClCompile Include="FloydSteinbergDiffuser.cpp" />
+    <ClCompile Include="FloydSteinbergDistributor.cpp" />
+    <ClCompile Include="GoodNeighborDiffuser.cpp" />
+    <ClCompile Include="GoodNeighborDistributor.cpp" />
+    <ClCompile Include="HilbertScanner.cpp" />
+    <ClCompile Include="KnuthDiffuser.cpp" />
+    <ClCompile Include="KnuthDistributor.cpp" />
+    <ClCompile Include="KnuthZhouDiffuser.cpp" />
+    <ClCompile Include="PlainDiffuser.cpp" />
+    <ClCompile Include="PlainThresholder.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="SequentialScanner.cpp" />
+    <ClCompile Include="SerpentineScanner.cpp" />
+    <ClCompile Include="RandomScanner.cpp" />
+    <ClCompile Include="Thresholder.cpp" />
+    <ClCompile Include="VarCoeffDiffuser.cpp" />
+    <ClCompile Include="VarCoeffDistributor.cpp" />
+    <ClCompile Include="ZhouDiffuser.cpp" />
+    <ClCompile Include="ZhouDistributor.cpp" />
+    <ClCompile Include="ZhouThresholder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ArrayConstrainer.hpp" />
+    <ClInclude Include="Constrainer.hpp" />
+    <ClInclude Include="ConstrainedThresholder.hpp" />
+    <ClInclude Include="CoordinatePixel.hpp" />
+    <ClInclude Include="CounterScanner.hpp" />
+    <ClInclude Include="Diffuser.hpp" />
+    <ClInclude Include="Distributor.hpp" />
+    <ClInclude Include="FloydSteinbergDiffuser.hpp" />
+    <ClInclude Include="FloydSteinbergDistributor.hpp" />
+    <ClInclude Include="GoodNeighborDiffuser.hpp" />
+    <ClInclude Include="GoodNeighborDistributor.hpp" />
+    <ClInclude Include="HilbertScanner.hpp" />
+    <ClInclude Include="KnuthDiffuser.hpp" />
+    <ClInclude Include="KnuthDistributor.hpp" />
+    <ClInclude Include="KnuthZhouDiffuser.hpp" />
+    <ClInclude Include="PlainDiffuser.hpp" />
+    <ClInclude Include="PlainThresholder.hpp" />
+    <ClInclude Include="Scanner.hpp" />
+    <ClInclude Include="SequentialScanner.hpp" />
+    <ClInclude Include="SerpentineScanner.hpp" />
+    <ClInclude Include="RandomScanner.hpp" />
+    <ClInclude Include="Thresholder.hpp" />
+    <ClInclude Include="VarCoeffDiffuser.hpp" />
+    <ClInclude Include="VarCoeffDistributor.hpp" />
+    <ClInclude Include="ZhouDiffuser.hpp" />
+    <ClInclude Include="ZhouDistributor.hpp" />
+    <ClInclude Include="ZhouThresholder.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

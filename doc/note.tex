@@ -1,0 +1,172 @@
+\section{Blog}
+
+\begin{description}
+\item[March 01, 2010]
+{
+I think I should factor the Diffuser class into Thresholder, which chooses the output/threshold value, and Distributor, which determines the error values distributed to neighbors.
+}
+\item[October 18, 2009: constrained halftoning]
+{
+I can formulate a form of constrained halftoning with applications ranging from Microsoft tag generation to halftoning an animation or video. The common theme is to (hard or soft) constrain certain pixel values. For example, in Microsoft tag, I need to constrain the tag pixel values to known/given values. In animation, I need to make sure that pixels change as little as possible across frames for coherence, in particular for these displays (e.g. e-book) that have long latency response.
+
+There are already video halftoning papers, e.g. \cite{Sun:2006:VH}.
+}
+\item[May 13, 2009]
+{
+There are significant redundancies between discrete and continuous void cluster code, so it might be good to clean them up somehow.
+
+On the other hand, since eventually the discrete code could be run as a special case of the continuous one (and thus becomes obsolete), the cleanup might not be entirely necessary.
+
+I will see this later.
+}
+\item[May 08, 2009]
+{
+My experiments indicate that continuous space void-and-cluster ought to be doable to produce good multi-class sampling.
+Intuitively it should also avoid the possibility of regular sampling as commonly plagued iterative (Lloyd) relaxation methods.
+It will be interesting to compare with \cite{Balzerand:2009:CCPD}.
+
+The next step is to figure out how to extend void-cluster method for adaptive sampling. If this can be done, then I might have enough distinctions from \cite{Wang:1999:CBN}.
+}
+\item[May 02, 2009]
+{
+Hmm, what will happen if I modify KnuthDiffer to make the weights more or less random?
+Or even simpler, making the thresholds random like \cite{Zhou:2003:IMT}?
+
+I doubt how much practical benefit this is going to have, given that \cite{Zhou:2003:IMT} is already simple and good enough.
+The key problem for error diffusion is limited neighborhood size, and this is not going to be fixed by changing to a Hilbert curve ordering.
+
+However, this could be worth trying for the purpose for comparison to \cite{Wei:2009:MPDS}, as a way to introduce some randomness into the output.
+
+(Later after coding and experimentation) Adding modulation from \cite{Zhou:2003:IMT} to Knuth coefficients indeed improve quality a lot, especially for slow changing tone regions.
+}
+\item[May 02, 2009]
+{
+When implementing void-and-cluster, I should directly splat Gaussian blobs from samples instead of the usual spatial filtering or FFT methods.
+Intuitively, directly splatting makes more computational sense. Since the Gaussian width should be inversely proportional to sample density, splatting would keep the computation roughly constant.
+However this is not the case for spatial filtering or FFT, as they could not take advantage of the number of input samples.
+This could be a particular concern to me as I would deal mostly with sufficiently sparse sample sets (i.e. enlarging spatial resolution while keeping the number of samples constant to reduce quantization artifacts).
+}
+\item[May 02, 2009]
+{
+From a mental perspective, to achieve maximum objectivity, I should try to position myself to find the best alternative methods other than multi-class PD.
+This could not only allow me to critically and rationally critique \cite{Wei:2009:MPDS} but also potentially find better algorithms.
+
+Spotting weaknesses in one's own work is always very difficult.
+
+Plus, if any scooping happens, it is more likely to happen from another technique achieving multiple classes of samples instead of a direct Poisson-disk sampling method. So I might as well be the one doing this.
+}
+\item[May 02, 2009]
+{
+Actually, the void and cluster method could be applied for both continuous and discrete sampling. So if I plan to implement it I might as well do it general enough.
+
+This could also be considered as a form of iterative relaxation.
+But actually not, because iterative relaxation usually shift samples only locally with respect to the neighbors whereas direct binary search would move samples around globally.
+
+Actually, could I design a multi-class both-continuous-and-discrete space void-and-cluster algorithm that also avoids degeneracy like done in \cite{Balzerand:2009:CCPD}? This will be a distribution different from multi-class PD \cite{Wei:2009:MPDS} but sharing similar goals.
+(Multi-class PD will have guaranteed non-intersection property.)
+In particular, by allowing the custom weighting scheme as described in \cite{Wang:1999:CBN} I might be able to customize the favoring for different subset-unions for classes (which does not seem possible with multi-class PD).
+}
+\item[May 01, 2009]
+{
+Using Hilbert curve with coefficients in \cite{Knuth:1987:DHDD} indeed produced much less noisier results than random order, but I could see obvious structured artifacts in the mid tone as discussed by \cite{Zhou:2003:IMT}.
+}
+\item[April 30, 2009]
+{
+The GoodNeighborDiffuser class is buggy, as it does not work at all with scanline or serpentine order.
+}
+\item[April 30, 2009]
+{
+Just implement a special diffuser class that takes into account already visited pixels, and modify propagation coefficients/errors from an input (ordinary) diffuser.
+
+I could then try random order to see what happens (ought to be similar to dispersed dot diffusion), before trying more complex methods such as Hilbert curve or direct binary search.
+}
+\item[April 30, 2009]
+{
+Also look at \cite{Zhang:1993:SD} for parallel halftoning.
+
+The idea of randomized order and propagate errors only to not-yet-visited neighbors is first explored by \cite{Knuth:1987:DHDD}.
+
+Looks like parallelism and random ordering have been extensively studied before for error diffusion.
+I wonder if there is enough room left for algorithmic novelty in terms of order-independent error diffusion, as well as practical importance and utility.
+}
+\item[April 29, 2009]
+{
+Even though blue noise dither array is computationally cheap, it has this undesirable property of repetition. Could this be addressed by applying Wang tiles?
+}
+\item[April 28, 2009]
+{
+I need to allow the input of floating point constant images to avoid the precision limitation of ppm images for really large output field.
+}
+\item[April 28, 2009]
+{
+\cite{Zhou:2003:IMT} indeed produced more blue-noise-ish results than \cite{Ostromoukhov:2001:SEE}, most (I believe) due to the use of random threshold modulation.
+}
+\item[April 27, 2009]
+{
+Actually, I need to think carefully about how to pick palette colors for vector error diffusion. The choice is likely to have a great impact on the randomness and uniformness of the resulting distribution.
+
+On the other hand, even for single-class gray-scale error diffusion, the result by error diffusion is likely to be too regular, especially for regular algorithms like \cite{Ostromoukhov:2001:SEE,Zhou:2003:IMT}.
+This is quite obvious even from the images in \cite{Ostromoukhov:2001:SEE}.
+The results in \cite{Zhou:2003:IMT} look better and it uses random number for threshold modulation, so I might need to give it a try.
+
+Also, using an expensive optimization based approach like \cite{Pang:2008:SAH} might produce better results, but I believe extensions are required to handle uniform inputs.
+}
+\item[April 27, 2009]
+{
+For easy coding, I should use pgm/ppm images as the unified interface to communicate the discrete sampling output from this project to rainbow noise.
+}
+\item[April 27, 2009]
+{
+Color error diffusion based on \cite{Ostromoukhov:2001:SEE}.
+I doubt if \cite{Zhou:2003:IMT} will be much better.
+This is to be expected: for a constant input image, error diffusion, being a deterministic algorithm, ought to produce certain periodic results.
+(Would adding white noise mask help here? I guess this is one of the earlier techniques for improving dithering quality. I should probably try this to avoid reviewer critiques.)
+
+For comparison with my method \cite{Wei:2009:MPDS}, I should provide a set of ED results with different resolution so that they have same sampling density.
+}
+\item[April 27, 2009]
+{
+Hmm, could I use error diffusion as a way to decompose an input image into a number of color channels to apply my multi-class PD?
+}
+\item[April 26, 2009]
+{
+Initial experiments indicate that color error diffusion based on Floyd-Steinberg will produce very regular results.
+Need to try \cite{Ostromoukhov:2001:SEE,Zhou:2003:IMT}.
+}
+\item[April 26, 2009]
+{
+Bilateral halftoning?
+}
+\item[April 24, 2009]
+{
+Actually, my code for Floyd-Steinberg + random order is not very correct, as it would diffuse errors into neighbors that have been already assigned values.
+The correct approach should be that errors can only be propagated into neighbors that have not yet been finalized.
+
+This also brings out an interesting question: how exactly did traditional error diffusion perform with serpentine order? Did they actually mirror reflect the diffusion coefficients?
+}
+\item[April 23, 2009]
+{
+For Floyd-Steinberg error diffusion, a random order produces much better result than scanline order, as manifested by a linear ramp input.
+
+This random order thing could be a precursor for success of a multi-resolution order-independent algorithm.
+
+But of course, let me first try serpentine order and \cite{Ostromoukhov:2001:SEE,Zhou:2003:IMT} to see quality improvements.
+}
+\item[April 23, 2009 order-independent error diffusion]
+{
+Would order-independent error diffusion useful? This might be possible via my methodology from order independent texture synthesis.
+But I need to make sure this has any practical application purpose, as error diffusion is simple enough and the scanline algorithm might actually be more natural for printers.
+}
+\item[April 22, 2009]
+{
+Some notes after reading \cite{Sharma:2002:DCI}:
+\begin{itemize}
+\item{Focus on vector error diffusion. Use different gray level inputs to control output density.}
+\item{Try to see if my algorithm actually beats error diffusion, even for the best version.}
+\item{Error diffusion is an interesting subject to learn and code with. Have fun.}
+\item{Has anyone tried to extend \cite{Ostromoukhov:2001:SEE} for vector error diffusion?}
+\item{Semi-vector error diffusion seems irrelevant here, ditto other halftoning algorithms.}
+\item{Parallel error diffusion \cite{Metaxas:2003:PDH}?}
+\end{itemize}
+}
+\end{description}
