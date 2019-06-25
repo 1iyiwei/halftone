@@ -50,6 +50,10 @@ def main():
         os.system(command);
         os.remove(output_pgm);
 
+        # check
+        command = "magick " + output_png  + " -resize 1x1 txt:-";
+        os.system(command);
+
     # cleanup
     if os.path.exists(palette_file_name):
         os.remove(palette_file_name);
