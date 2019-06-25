@@ -58,7 +58,7 @@ set output_root_name = ${input_root_name}_${diffuser_type}_${scanner_type};
 
 ${exe_dir}/ErrorDiffuse ${output_dir}/${input_root_name}.pgm ${output_dir}/${output_root_name}.pgm ${diffuser_type} ${scanner_type} "null";
 
-magick ${output_dir}/${input_root_name}.pgm ${output_dir}/${input_root_name}.png
+magick ${output_dir}/${output_root_name}.pgm ${output_dir}/${output_root_name}.png
 end # foreach scanner_type
 end # foreach diffuser_type
 
