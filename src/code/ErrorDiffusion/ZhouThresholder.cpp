@@ -6,6 +6,9 @@
 
 */
 
+#include <algorithm>
+using namespace std;
+
 #include "ZhouThresholder.hpp"
 
 #include "Exception.hpp"
