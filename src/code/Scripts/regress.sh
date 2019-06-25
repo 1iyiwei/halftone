@@ -9,6 +9,8 @@ set output_dir = $argv[1]
 
 mkdir -p ${output_dir}
 
+set exe_dir = ./bin/Release/
+
 if(1) then
 
 set input_root_name = ramp;
@@ -23,7 +25,7 @@ set image_height = ${region_height};
 
 set stripe_root_name = ${input_root_name}_stripe;
 
-convert -size ${image_width}x${image_height} xc:none -fill "rgb(0,0,0)" -draw "rectangle 0,0,${image_width},${image_height}" -compress none ${output_dir}/${input_root_name}.ppm
+magick -size ${image_width}x${image_height} xc:none -fill "rgb(0,0,0)" -draw "rectangle 0,0,${image_width},${image_height}" -compress none ${output_dir}/${input_root_name}.ppm
 
 set draw_string = "";
 
@@ -36,7 +38,7 @@ while(${gray_level} <= ${gray_level_max})
 
 #set draw_string = "${draw_string} -fill ${token}rgb(${gray_level},${gray_level},${gray_level})${token} -draw ${token}rectangle ${width_start},0,${width_end},${image_height}${token} ";
 
-convert -size ${region_width}x${region_height} xc:none -fill "rgb(${gray_level},${gray_level},${gray_level})" -draw "rectangle 0,0,${region_width},${region_height}" -compress none ${output_dir}/${stripe_root_name}.ppm
+magick -size ${region_width}x${region_height} xc:none -fill "rgb(${gray_level},${gray_level},${gray_level})" -draw "rectangle 0,0,${region_width},${region_height}" -compress none ${output_dir}/${stripe_root_name}.ppm
 
 composite -geometry ${region_width}x${region_height}+${width_start}+0 ${output_dir}/${stripe_root_name}.ppm ${output_dir}/${input_root_name}.ppm ${output_dir}/${input_root_name}.ppm;
 
@@ -45,16 +47,18 @@ end
 
 rm -f ${output_dir}/${stripe_root_name}.ppm;
 
-convert ${output_dir}/${input_root_name}.ppm -compress none ${output_dir}/${input_root_name}.pgm;
+magick ${output_dir}/${input_root_name}.ppm -compress none ${output_dir}/${input_root_name}.pgm;
 rm -f ${output_dir}/${input_root_name}.ppm;
 
-#set exe_string = "convert -size ${image_width}x${image_height} xc:none ${draw_string} -compress none ${output_dir}/foo.ppm";
+#set exe_string = "magick -size ${image_width}x${image_height} xc:none ${draw_string} -compress none ${output_dir}/foo.ppm";
 
 foreach diffuser_type (floydsteinberg varcoeff zhou knuth knuthzhou)
 foreach scanner_type (scanline serpentine random badrandom hilbert)
 set output_root_name = ${input_root_name}_${diffuser_type}_${scanner_type};
 
-./src/Main/Release/ErrorDiffuse ${output_dir}/${input_root_name}.pgm ${output_dir}/${output_root_name}.pgm ${diffuser_type} ${scanner_type} "null";
+${exe_dir}/ErrorDiffuse ${output_dir}/${input_root_name}.pgm ${output_dir}/${output_root_name}.pgm ${diffuser_type} ${scanner_type} "null";
+
+magick ${output_dir}/${input_root_name}.pgm ${output_dir}/${input_root_name}.png
 end # foreach scanner_type
 end # foreach diffuser_type
 
@@ -78,7 +82,10 @@ foreach diffuser_type (floydsteinberg varcoeff zhou knuth knuthzhou)
 foreach scanner_type (scanline serpentine random badrandom hilbert)
 set output_root_name = ${input_root_name}_${diffuser_type}_${scanner_type};
 
-./src/Main/Release/ErrorDiffuse -${image_size}.${intensity} ${output_dir}/${output_root_name}.ppm ${diffuser_type} ${scanner_type} ${palette_file_name};
+${exe_dir}/ErrorDiffuse -${image_size}.${intensity} ${output_dir}/${output_root_name}.ppm ${diffuser_type} ${scanner_type} ${palette_file_name};
+
+magick ${output_dir}/${output_root_name}.ppm ${output_dir}/${output_root_name}.png
+
 end # foreach scanner_type
 end # foreach diffuser_type
 
@@ -109,9 +116,11 @@ set trough_candidate_size = "";
 set trough_jitter_radius = "";
 endif
 
-./src/Main/Release/VoidCluster ${method} ${grid_size} ${num_classes} ${num_samples} ${weighting_scheme} ${relative_splat_size} ${init_swap_size} ${trough_candidate_size} ${trough_jitter_radius} ${min_num_iterations} ${output_dir}/${output_root_name}.ppm
+${exe_dir}/VoidCluster ${method} ${grid_size} ${num_classes} ${num_samples} ${weighting_scheme} ${relative_splat_size} ${init_swap_size} ${trough_candidate_size} ${trough_jitter_radius} ${min_num_iterations} ${output_dir}/${output_root_name}.ppm
+magick ${output_dir}/${output_root_name}.ppm ${output_dir}/${output_root_name}.png
 
-./src/Main/Release/VoidClusterVis ${method} ${grid_size} ${num_classes} ${num_samples} ${weighting_scheme} ${relative_splat_size} ${init_swap_size} ${trough_candidate_size} ${trough_jitter_radius} ${min_num_iterations} ${output_dir}/${output_root_name}_vis.ppm
+${exe_dir}/VoidClusterVis ${method} ${grid_size} ${num_classes} ${num_samples} ${weighting_scheme} ${relative_splat_size} ${init_swap_size} ${trough_candidate_size} ${trough_jitter_radius} ${min_num_iterations} ${output_dir}/${output_root_name}_vis.ppm
+magick ${output_dir}/${output_root_name}_vis.ppm ${output_dir}/${output_root_name}_vis.png
 end
 end
 
@@ -125,9 +134,9 @@ set image_size = 256;
 set tag_root_name = artificial;
 
 # tag image
-convert -size ${image_size}x${image_size} xc:none -fill "rgb(255,255,255)" -draw "rectangle 0,0,${image_size},${image_size}" -fill "rgb(0,255,255)" -draw "rectangle 32,32,96,96" -fill "rgb(255,0,255)" -draw "rectangle 96,96,160,160" -fill "rgb(255,255,0)" -draw "rectangle 160,160,224,224" -compress none ${output_dir}/${tag_root_name}_color.ppm;
+magick -size ${image_size}x${image_size} xc:none -fill "rgb(255,255,255)" -draw "rectangle 0,0,${image_size},${image_size}" -fill "rgb(0,255,255)" -draw "rectangle 32,32,96,96" -fill "rgb(255,0,255)" -draw "rectangle 96,96,160,160" -fill "rgb(255,255,0)" -draw "rectangle 160,160,224,224" -compress none ${output_dir}/${tag_root_name}_color.ppm;
 
-convert ${output_dir}/${tag_root_name}_color.ppm -negate -compress none ${output_dir}/${tag_root_name}_spec.ppm
+magick ${output_dir}/${tag_root_name}_color.ppm -negate -compress none ${output_dir}/${tag_root_name}_spec.ppm
 
 # input image
 set input_color = 127;
@@ -137,8 +146,8 @@ set color_b = ${input_color};
 
 set input_root_name = r${color_r}g${color_g}b${color_b};
 
-convert -size ${image_size}x${image_size} xc:none -fill "rgb(${color_r},${color_g},${color_b})" -draw "rectangle 0,0,${image_size},${image_size}" -compress none ${output_dir}/${input_root_name}.ppm;
-convert ${output_dir}/${input_root_name}.ppm -compress none ${output_dir}/${input_root_name}.ppm;
+magick -size ${image_size}x${image_size} xc:none -fill "rgb(${color_r},${color_g},${color_b})" -draw "rectangle 0,0,${image_size},${image_size}" -compress none ${output_dir}/${input_root_name}.ppm;
+magick ${output_dir}/${input_root_name}.ppm -compress none ${output_dir}/${input_root_name}.ppm;
 
 # output image
 
@@ -154,6 +163,7 @@ set palette_file_name = "null";
 set output_root_name = ${tag_root_name}_${input_root_name}_${diffuser_type}_${scanner_type};
 
 # constrained error diffusion
-./src/Main/Release/ConstrainedErrorDiffuse ${output_dir}/${input_root_name}.ppm ${output_dir}/${output_root_name}.ppm ${diffuser_type} ${scanner_type} ${palette_file_name} ${output_dir}/${tag_root_name}_color.ppm ${output_dir}/${tag_root_name}_spec.ppm;
+${exe_dir}/ConstrainedErrorDiffuse ${output_dir}/${input_root_name}.ppm ${output_dir}/${output_root_name}.ppm ${diffuser_type} ${scanner_type} ${palette_file_name} ${output_dir}/${tag_root_name}_color.ppm ${output_dir}/${tag_root_name}_spec.ppm;
+magick ${output_dir}/${tag_root_name}_spec.ppm ${output_dir}/${tag_root_name}_spec.png
 
 endif
