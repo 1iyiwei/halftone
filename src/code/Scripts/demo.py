@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import glob
+from halftone import *
 
 def findBaseName(input_file_path):
     path, file = os.path.split(input_file_path);
@@ -36,6 +37,7 @@ def main():
     for input_file_name in input_file_names:
         input_base_name = findBaseName(input_file_name);
         input_pgm = os.path.join(output_dir, input_base_name + ".pgm");
+        input_clean_pgm = os.path.join(output_dir, input_base_name + "_clean.pgm");
 
         output_base_name = input_base_name + "_" + diffuser + "_" + scanner;
         output_pgm = os.path.join(output_dir, output_base_name + ".pgm");
@@ -44,7 +46,9 @@ def main():
         command = "magick " + input_file_name + " -depth 8 -compress none " + input_pgm;
         os.system(command);
 
-        input_spec = input_pgm;
+        removeComments(input_pgm, input_clean_pgm);
+        
+        input_spec = input_clean_pgm;
         command = os.path.join(bin_dir, "ErrorDiffuse") + " " + input_spec + " " + output_pgm + " " + diffuser + " " + scanner + " " + palette_file_name;
         
         #print(command);
