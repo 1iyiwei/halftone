@@ -4,6 +4,11 @@ import argparse
 import glob
 from halftone import *
 
+'''
+Better quality than Photoshop
+https://www.quora.com/In-what-ways-can-I-do-dithering-in-Photoshop
+'''
+
 def findBaseName(input_file_path):
     path, file = os.path.split(input_file_path);
     parts = file.split(".");
