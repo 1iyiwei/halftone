@@ -14,7 +14,8 @@ def main():
     #diffuser = "floydsteinberg";
     #diffuser = "varcoeff";
     diffuser = "zhou";
-    scanner = "scanline";
+    #scanner = "scanline"; # diagonal direction bias
+    scanner = "serpentine";
 
     grays = [0, 64, 128, 192, 255];
 
